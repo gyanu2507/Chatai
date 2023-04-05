@@ -6,7 +6,7 @@ const colors = require("colors");
 const dotenv = require("dotenv");
 const connectDB = require("./config/db");
 const errorHandler = require("./middlewares/errorMiddleware");
-
+const path = require("path");
 //routes path
 const authRoutes = require("./routes/authRoutes");
 
@@ -28,14 +28,17 @@ app.use(errorHandler);
 
 const PORT = process.env.PORT || 8080;
 
-app.get('/', (req, res) => {
-  res.send('API is running');
-})
+app.get("/", (req, res) => {
+  res.send("API is running");
+});
 
 //API routes
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/openai", require("./routes/openaiRoutes"));
-
+app.use(express.static(path.join(__dirname, "./client/build")));
+app.get("*", function (req, res) {
+  res.sendFile(path.join(__dirname, "./client/build/index.html"));
+});
 //listen server
 app.listen(PORT, () => {
   console.log(
