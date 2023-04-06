@@ -26,19 +26,18 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 8080;
-
-app.get("/", (req, res) => {
-  res.send("API is running");
-});
-
-//API routes
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/openai", require("./routes/openaiRoutes"));
 app.use(express.static(path.join(__dirname, "./client/build")));
 app.get("*", function (req, res) {
   res.sendFile(path.join(__dirname, "./client/build/index.html"));
 });
+// app.get("/", (req, res) => {
+//   res.send("API is running");
+// });
+
+//API routes
+const PORT = process.env.PORT || 8080;
 //listen server
 app.listen(PORT, () => {
   console.log(
